@@ -9,8 +9,8 @@
 import UIKit
 
 class TodoListViewController: UITableViewController {
-
-    let itemArray = ["Study iOS", "Meditate", "Exercise"]
+    
+    var itemArray = ["Study iOS", "Meditate", "Exercise"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,10 +30,9 @@ class TodoListViewController: UITableViewController {
     }
     
     // MARK: - Tableview Delegate Methods
-     
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print(itemArray[indexPath.row])
-
+        
         if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
             tableView.cellForRow(at: indexPath)?.accessoryType = .none
         } else {
@@ -43,7 +42,31 @@ class TodoListViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: true)
         
     }
-
-
+    
+    // MARK: - Add New Items
+    
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Add new item", message: "", preferredStyle: .alert)
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Create new item"
+            textField = alertTextField
+        }
+        
+        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
+            self.itemArray.append(textField.text!)
+            print(self.itemArray)
+            self.tableView.reloadData()
+            
+        }
+        
+        alert.addAction(action)
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
 
