@@ -20,23 +20,23 @@ class TodoListViewController: UITableViewController {
         // Do any additional setup after loading the view.
                 
         
-        print(dataFilePath)
-        var newItem = Item()
-        newItem.title = "Study iOS"
-        itemArray.append(newItem)
-        
-        var newItem2 = Item()
-        newItem2.title = "Meditate"
-        itemArray.append(newItem2)
-        
-        var newItem3 = Item()
-        newItem3.title = "Exercise"
-        itemArray.append(newItem3)
+//        print(dataFilePath)
+//        var newItem = Item()
+//        newItem.title = "Study iOS"
+//        itemArray.append(newItem)
+//        
+//        var newItem2 = Item()
+//        newItem2.title = "Meditate"
+//        itemArray.append(newItem2)
+//        
+//        var newItem3 = Item()
+//        newItem3.title = "Exercise"
+//        itemArray.append(newItem3)
         
 //        if let toDoListArray = defaults.array(forKey: "ToDoListArray") as? [Item]{
 //            itemArray = toDoListArray
 //        }
-        
+        loadItems()
     }
     
     // MARK: - Tableview Datasource
@@ -110,5 +110,16 @@ class TodoListViewController: UITableViewController {
 
     }
 
+    func loadItems() {
+        if let data = try? Data(contentsOf: dataFilePath!) {
+            let decoder = PropertyListDecoder()
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Error decoding array")
+            }
+
+        }
+    }
 }
 
