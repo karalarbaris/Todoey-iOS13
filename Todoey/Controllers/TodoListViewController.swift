@@ -11,36 +11,17 @@ import CoreData
 
 class TodoListViewController: UITableViewController {
     
-//    var itemArray = ["Study iOS", "Meditate", "Exercise"]
     var itemArray = [Item]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         // Do any additional setup after loading the view.
-                
         
-//        print(dataFilePath)
-//        var newItem = Item()
-//        newItem.title = "Study iOS"
-//        itemArray.append(newItem)
-//
-//        var newItem2 = Item()
-//        newItem2.title = "Meditate"
-//        itemArray.append(newItem2)
-//        
-//        var newItem3 = Item()
-//        newItem3.title = "Exercise"
-//        itemArray.append(newItem3)
-        
-//        if let toDoListArray = defaults.array(forKey: "ToDoListArray") as? [Item]{
-//            itemArray = toDoListArray
-//        }
-        
-        
-//        loadItems()
+        loadItems()
     }
     
     // MARK: - Tableview Datasource
@@ -115,16 +96,16 @@ class TodoListViewController: UITableViewController {
 
     }
 
-//    func loadItems() {
-//        if let data = try? Data(contentsOf: dataFilePath!) {
-//            let decoder = PropertyListDecoder()
-//            do {
-//                itemArray = try decoder.decode([Item].self, from: data)
-//            } catch {
-//                print("Error decoding array")
-//            }
-//
-//        }
-//    }
+    func loadItems() {
+        
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching data from context \(error) ")
+        }
+        
+    }
 }
 
