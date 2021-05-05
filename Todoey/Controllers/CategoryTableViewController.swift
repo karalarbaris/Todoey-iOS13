@@ -17,29 +17,13 @@ class CategoryTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//            let newCategory = Category(context: self.context)
-//            newCategory.name = "category 1"
-//            self.categoryArray.append(newCategory)
-        
         
         loadCategories()
-//            tableView.reloadData()
-        
-        
-//        var newItem = Item()
-//        newItem.title = "Study iOS"
-//        itemArray.append(newItem)
-        
-        
+
     }
     
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
@@ -57,6 +41,17 @@ class CategoryTableViewController: UITableViewController {
     
     // MARK: - Table view delegate
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TodoListViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categoryArray[indexPath.row]
+        }
+    }
     
     // MARK: - Data manipulation methods
     // save date and load date
