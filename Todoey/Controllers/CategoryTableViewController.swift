@@ -7,14 +7,13 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class CategoryTableViewController: UITableViewController {
 
+    let realm = try! Realm()
     var categoryArray = [Category]()
     
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,11 +69,11 @@ class CategoryTableViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add category", style: .default) { UIAlertAction in
             
-            let newCategory = Category(context: self.context)
-            newCategory.name = textField.text
+            let newCategory = Category()
+            newCategory.name = textField.text!
             self.categoryArray.append(newCategory)
             
-            self.saveCagetories()
+            self.save(category: newCategory)
         }
         
         alert.addAction(action)
@@ -83,9 +82,11 @@ class CategoryTableViewController: UITableViewController {
         
     }
     
-    func saveCagetories() {
+    func  save(category: Category) {
         do {
-            try context.save()
+            try realm.write({
+                realm.add(category)
+            })
         } catch {
             print("Error saving category \(error)")
         }
@@ -94,14 +95,14 @@ class CategoryTableViewController: UITableViewController {
     }
     
     func loadCategories() {
-        let request: NSFetchRequest<Category> = Category.fetchRequest()
-        
-        do {
-            categoryArray = try context.fetch(request)
-        } catch {
-            print("Error fetching category \(error)")
-        }
-        tableView.reloadData()
+//        let request: NSFetchRequest<Category> = Category.fetchRequest()
+//        
+//        do {
+//            categoryArray = try context.fetch(request)
+//        } catch {
+//            print("Error fetching category \(error)")
+//        }
+//        tableView.reloadData()
     }
     
 }
