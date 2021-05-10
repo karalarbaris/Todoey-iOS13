@@ -58,6 +58,7 @@ class TodoListViewController: UITableViewController {
         if let item = todoItems?[indexPath.row] {
             do {
                 try realm.write {
+//                    realm.delete(item)
                     item.done = !item.done
                 }
             } catch {
@@ -66,12 +67,6 @@ class TodoListViewController: UITableViewController {
         }
         
         tableView.reloadData()
-        
-        //        context.delete(itemArray[indexPath.row])
-        //        itemArray.remove(at: indexPath.row)
-        
-        //        itemArray?[indexPath.row].done = !itemArray?[indexPath.row].done
-        //        self.saveItems()
         
         tableView.deselectRow(at: indexPath, animated: true)
         
